@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminCheckMiddleware
@@ -15,6 +16,14 @@ class AdminCheckMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if (auth()->check() && auth()->user()->tokenCan('server:admin')){
+            Log::info('this is working');
+            return $next($request);
+        }
+
+        return \response()->json([
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'message' => Response::$statusTexts[401]
+        ]);
     }
 }

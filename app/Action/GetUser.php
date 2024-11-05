@@ -19,24 +19,19 @@ class GetUser
             ];
         }
 
-        return [
+
+        if ($user->email === $request['email'] && Hash::check($request['password'], $user->password)) {
+            return [
                 'userName' => $user->name,
                 'userRole' => $user->role_as,
                 'userToken' => AuthenticationUserTokenGenerate::generate($user)
             ];
+        }
 
-
-//        if ($user->email === $request['email'] && Hash::check($request['password'], $user->password)) {
-//            return [
-//                'userName' => $user->name,
-//                'userRole' => $user->role_as,
-//            ];
-//        }
-
-//        return [
-//            'status' => Response::HTTP_UNAUTHORIZED,
-//            'message' => Response::$statusTexts[401]
-//        ];
+        return [
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'message' => Response::$statusTexts[401]
+        ];
 
 
     }

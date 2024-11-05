@@ -23,13 +23,6 @@ class AuthenticationUserTokenGenerate
 
         return '';
 
-//        if ($user->role_as === 1) {
-//            return $user->createToken('admin', ['server:admin'])->plainTextToken;
-//        }
-//        elseif ($user->role_as === 2) {
-//            return $user->createToken('manger', ['server:manager'])->plainTextToken;
-//        }
-
     }
 
 }
