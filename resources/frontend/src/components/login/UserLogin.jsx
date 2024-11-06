@@ -1,4 +1,5 @@
 import {useState} from "react";
+import axios from "axios";
 const UserLogin = () => {
     const [loginDetails, setLoginDetails] = useState({
         email: '',
@@ -14,9 +15,14 @@ const UserLogin = () => {
         }))
     }
 
-    const userSignIn = (event) => {
+    const userSignIn = async (event) => {
         event.preventDefault()
-        console.log(loginDetails)
+
+        return axios.get('/sanctum/csrf-cookie').then(async () => {
+            const response = await axios.post('api/user-sign-in', loginDetails).then()
+            console.log(response.data)
+        });
+
     }
 
     return (
