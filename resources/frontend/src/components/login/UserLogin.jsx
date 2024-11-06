@@ -1,10 +1,13 @@
 import {useState} from "react";
 import axios from "axios";
+import {useDispatch} from "react-redux";
+import {storeAuthUser} from "../../utlities/state/UserSignInSlice.js";
 const UserLogin = () => {
     const [loginDetails, setLoginDetails] = useState({
         email: '',
         password: ''
     })
+    const dispatch = useDispatch()
 
     const handleInputChange = (event) => {
         const { name, value } = event.target
@@ -20,7 +23,7 @@ const UserLogin = () => {
 
         return axios.get('/sanctum/csrf-cookie').then(async () => {
             const response = await axios.post('api/user-sign-in', loginDetails).then()
-            console.log(response.data)
+            dispatch(storeAuthUser(response.data))
         });
 
     }
