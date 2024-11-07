@@ -1,13 +1,24 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {storeAuthUser} from "../../utlities/state/UserSignInSlice.js";
+import {useNavigate} from "react-router-dom";
+import {checkUserAuthenticate} from "../../utlities/state/common.js";
+import {userSignIn} from "../../utlities/api/user/UserSignIn.js";
 const UserLogin = () => {
     const [loginDetails, setLoginDetails] = useState({
         email: '',
         password: ''
     })
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const isAuthenticated = checkUserAuthenticate()
+
+    useEffect(() => {
+       if (isAuthenticated) {
+           navigate('/dashboard')
+       }
+    }, [isAuthenticated]);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target
@@ -18,15 +29,13 @@ const UserLogin = () => {
         }))
     }
 
-    const userSignIn = async (event) => {
+    const signInSubmit = async (event) => {
         event.preventDefault()
 
-        return axios.get('/sanctum/csrf-cookie').then(async () => {
-            const response = await axios.post('api/user-sign-in', loginDetails).then()
-            dispatch(storeAuthUser(response.data))
-        });
-
+        await  dispatch(userSignIn(loginDetails))
     }
+
+
 
     return (
         <section className="bg-gray-50 dark:bg-gray-900">
@@ -37,7 +46,7 @@ const UserLogin = () => {
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                             Sign in to your account
                         </h1>
-                        <form className="space-y-4 md:space-y-6" onSubmit={userSignIn}>
+                        <form className="space-y-4 md:space-y-6" onSubmit={signInSubmit}>
                             <div>
                                 <label htmlFor="email"
                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your

@@ -4,11 +4,11 @@ export const userSignInSlice = createSlice({
     name: 'authUser',
     initialState: {
         auth: {},
+        isAuthenticated: false
     },
-    reducers: {
-        storeAuthUser: (state, action) => {
-            state.auth = action.payload
-        }
+    reducers: {},
+    extraReducers: {
+
     }
 })
 
