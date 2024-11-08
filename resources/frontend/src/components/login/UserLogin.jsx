@@ -10,6 +10,7 @@ const UserLogin = () => {
         email: '',
         password: ''
     })
+    const [error, setError] = useState({})
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const isAuthenticated = checkUserAuthenticate()
@@ -32,10 +33,8 @@ const UserLogin = () => {
     const signInSubmit = async (event) => {
         event.preventDefault()
 
-        await  dispatch(userSignIn(loginDetails))
+        await  dispatch(userSignIn({loginDetails, setError}))
     }
-
-
 
     return (
         <section className="bg-gray-50 dark:bg-gray-900">

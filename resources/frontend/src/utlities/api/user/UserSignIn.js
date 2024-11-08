@@ -4,10 +4,17 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 
 export const userSignIn = createAsyncThunk(
     'authUser/login',
-    async (loginDetails) => {
+    async ({loginDetails, setError}) => {
+        // console.log(loginDetails)
         return axios.get('/sanctum/csrf-cookie').then(() => {
-        const response = axios.post('api/user-sign-in', loginDetails).then()
-        return response.data
+        return  axios.post('api/user-sign-in', loginDetails).then((response) => {
+
+            if (response.data.status === 401) {
+                setError(response.data)
+                return
+            }
+            return response
+            })
         });
     }
 )
